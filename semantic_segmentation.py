@@ -118,10 +118,10 @@ class PotsdamSemanticSegmentation(rv.ExperimentSet):
                                   .with_debug(debug) \
                                   .build()
 
-        train_scenes = [build_scene(task, data_uri, id, channel_order)
-                        for id in train_ids]
-        val_scenes = [build_scene(task, data_uri, id, channel_order)
-                      for id in val_ids]
+        train_scenes = [build_scene(task, data_uri, tile_id, channel_order)
+                        for tile_id in train_ids]
+        val_scenes = [build_scene(task, data_uri, tile_id, channel_order)
+                      for tile_id in val_ids]
 
         dataset = rv.DatasetConfig.builder() \
                                   .with_train_scenes(train_scenes) \
