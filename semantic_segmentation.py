@@ -101,7 +101,7 @@ class PotsdamSemanticSegmentation(rv.ExperimentSet):
                      'NODATA': (46, 'rgb(0,0,0)')}
 
         task = rv.TaskConfig.builder(rv.SEMANTIC_SEGMENTATION) \
-                            .with_chip_size(256) \
+                            .with_chip_size(366) \
                             .with_classes(classes) \
                             .with_chip_options(
                                 chips_per_scene=chips_per_scene,
