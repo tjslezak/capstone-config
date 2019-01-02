@@ -55,7 +55,7 @@ class PotsdamSemanticSegmentation(rv.ExperimentSet):
                     ]
         val_ids = ['SXE', 'SXF', 'SYC', 'SYD']
         # blue, red, ir
-        channel_order = [2, 4, 12]
+        channel_order = [1, 2, 3]
 
         debug = False
         batch_size = 8
