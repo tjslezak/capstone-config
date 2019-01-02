@@ -3,11 +3,11 @@ import os
 import rastervision as rv
 
 
-def build_scene(task, data_uri, tile_id, channel_order=None):
+def build_scene(task, data_uri, id, channel_order=None):
     ## id = id.replace('-', '_')
-    raster_source_uri = '{}/{}_raster.tif'.format(data_uri, tile_id)
+    raster_source_uri = '{}/rasters/{}_raster.tif'.format(data_uri, id)
 
-    label_source_uri = '{}/{}_labels.tif'.format(data_uri, tile_id)
+    label_source_uri = '{}/labels/{}_labels.tif'.format(data_uri, id)
 
     # Using with_rgb_class_map because input TIFFs have classes encoded as RGB colors.
     label_source = rv.LabelSourceConfig.builder(rv.SEMANTIC_SEGMENTATION_RASTER) \
@@ -33,7 +33,7 @@ def build_scene(task, data_uri, tile_id, channel_order=None):
     return scene
 
 
-class PotsdamSemanticSegmentation(rv.ExperimentSet):
+class GeoSemanticSegmentation(rv.ExperimentSet):
     def exp_main(self, root_uri, data_uri, test_run=False):
         """Run an experiment on Sentinel-2 data of Arizona.
         Uses Tensorflow Deeplab backend with Mobilenet architecture.
@@ -55,7 +55,7 @@ class PotsdamSemanticSegmentation(rv.ExperimentSet):
                     ]
         val_ids = ['SXE', 'SXF', 'SYC', 'SYD']
         # blue, red, ir
-        channel_order = [1, 2, 3]
+        channel_order = [0, 1, 2]
 
         debug = False
         batch_size = 8
@@ -118,10 +118,10 @@ class PotsdamSemanticSegmentation(rv.ExperimentSet):
                                   .with_debug(debug) \
                                   .build()
 
-        train_scenes = [build_scene(task, data_uri, tile_id, channel_order)
-                        for tile_id in train_ids]
-        val_scenes = [build_scene(task, data_uri, tile_id, channel_order)
-                      for tile_id in val_ids]
+        train_scenes = [build_scene(task, data_uri, id, channel_order)
+                        for id in train_ids]
+        val_scenes = [build_scene(task, data_uri, id, channel_order)
+                      for id in val_ids]
 
         dataset = rv.DatasetConfig.builder() \
                                   .with_train_scenes(train_scenes) \
