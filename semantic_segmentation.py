@@ -22,10 +22,9 @@ def build_scene(task, data_uri, id, channel_order=None):
         .build()
 
     raster_source = rv.RasterSourceConfig.builder(rv.GEOTIFF_SOURCE) \
-                  .with_uri(raster_source_uri) \
-                  .with_stats_transformer() \
-                  .build()
-
+        .with_uri(raster_source_uri) \
+        .with_stats_transformer() \
+        .build()
 
     scene = rv.SceneConfig.builder() \
                           .with_task(task) \
@@ -134,14 +133,11 @@ class GeoSemanticSegmentation(rv.ExperimentSet):
                                   .with_validation_scenes(val_scenes) \
                                   .build()
 
-        analyzer = rv.AnalyzerConfig.builder(rv.STATS_ANALYZER) \
-                                  .build()
 
         experiment = rv.ExperimentConfig.builder() \
                                         .with_id('geo-seg') \
                                         .with_task(task) \
                                         .with_backend(backend) \
-                                        .with_analyzer(analyzer) \
                                         .with_dataset(dataset) \
                                         .with_root_uri(root_uri) \
                                         .with_stats_analyzer() \
