@@ -64,7 +64,7 @@ class GeoSemanticSegmentation(rv.ExperimentSet):
 
         debug = False
         batch_size = 8
-        chips_per_scene = 500
+        chips_per_scene = 225
         num_steps = 100000
         model_type = rv.MOBILENET_V2
 
@@ -72,13 +72,13 @@ class GeoSemanticSegmentation(rv.ExperimentSet):
         # num_steps = 150000
         # model_type = rv.XCEPTION_65
 
-        if test_run:
-            debug = True
-            num_steps = 1
-            batch_size = 1
-            chips_per_scene = 50
-            train_ids = train_ids[0:1]
-            val_ids = val_ids[0:1]
+        # if test_run:
+        #     debug = True
+        #     num_steps = 1
+        #     batch_size = 1
+        #     chips_per_scene = 50
+        #     train_ids = train_ids[0:1]
+        #     val_ids = val_ids[0:1]
 
         classes = {'Q': (0, 'rgb(244,242,230)'), 'QTb': (1, 'rgb(240,213,240)'),
                     'QTv': (2, 'rgb(227,196,240)'), 'Qr': (3, 'rgb(255,255,186)'),
