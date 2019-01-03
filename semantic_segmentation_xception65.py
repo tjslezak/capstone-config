@@ -1,12 +1,10 @@
 import os
-
 import rastervision as rv
 
 
 def build_scene(task, data_uri, id, channel_order=None):
     ## id = id.replace('-', '_')
     raster_source_uri = '{}/rasters/{}_raster.tif'.format(data_uri, id)
-
     label_source_uri = '{}/labels/{}_labels.tif'.format(data_uri, id)
 
     # Using with_rgb_class_map because input TIFFs have classes encoded as RGB colors.
@@ -21,6 +19,8 @@ def build_scene(task, data_uri, id, channel_order=None):
         .with_rgb(True) \
         .build()
 
+    # Must define raster_source separate from raster_source_uri so StatsTransformer
+    # can convert uint16 images to uint8
     raster_source = rv.RasterSourceConfig.builder(rv.GEOTIFF_SOURCE) \
         .with_uri(raster_source_uri) \
         .with_stats_transformer() \
@@ -29,8 +29,7 @@ def build_scene(task, data_uri, id, channel_order=None):
     scene = rv.SceneConfig.builder() \
                           .with_task(task) \
                           .with_id(id) \
-                          .with_raster_source(raster_source,
-                                              channel_order=channel_order) \
+                          .with_raster_source(raster_source, channel_order=channel_order) \
                           .with_label_source(label_source) \
                           .with_label_store(label_store) \
                           .build()
@@ -121,18 +120,23 @@ class GeoSemanticSegmentation(rv.ExperimentSet):
                                   .build()
 
         train_scenes = [build_scene(task, data_uri, id, channel_order)
-                        for id in train_ids]
+                      for id in train_ids]
         val_scenes = [build_scene(task, data_uri, id, channel_order)
                       for id in val_ids]
 
+        augmentor = rv.AugmentorConfig(rv.NODATA_AUGMENTOR) \
+                                  .with_probability(0.3) \ 
+                                  .build()
+
         dataset = rv.DatasetConfig.builder() \
+                                  .with_augmentor(augmentor) \
                                   .with_train_scenes(train_scenes) \
                                   .with_validation_scenes(val_scenes) \
                                   .build()
 
 
         experiment = rv.ExperimentConfig.builder() \
-                                        .with_id('geo-seg') \
+                                        .with_id('geo-seg-xcept') \
                                         .with_task(task) \
                                         .with_backend(backend) \
                                         .with_dataset(dataset) \
