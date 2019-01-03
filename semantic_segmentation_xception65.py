@@ -59,12 +59,13 @@ class GeoSemanticSegmentation(rv.ExperimentSet):
                     'SVF', 'SWA', 'SWB', 'SWC', 'SWD', 'SWE', 'SWF', 'SXA', 'SXB', 'SXC', 'SXD',
                     ]
         val_ids = ['SXE', 'SXF', 'SYC', 'SYD']
+
         # blue, red, ir
         channel_order = [0, 1, 2]
 
         debug = False
         batch_size = 8
-        chips_per_scene = 500
+        chips_per_scene = 225
         num_steps = 150000
         model_type = rv.XCEPTION_65
 
